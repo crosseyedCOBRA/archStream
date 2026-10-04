@@ -1,0 +1,10 @@
+# makepkg build artifacts
+pkgbuilds/*/src/
+pkgbuilds/*/pkg/
+pkgbuilds/*/*.pkg.tar.*
+pkgbuilds/*/*.tar.gz
+pkgbuilds/*/*.log
+
+# git sources fetched by makepkg
+pkgbuilds/obs-studio/obs-studio/
+pkgbuilds/obs-studio/obs-studio-*/
