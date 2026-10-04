@@ -56,6 +56,20 @@ replace them with the repo versions:
 IgnorePkg   = obs-studio obs-studio-plugin-browser
 ```
 
+Holding OBS means its libraries can update underneath it. A major `ffmpeg`
+update, a `cef` update (browser source) or a `qt6-base` update can break the
+held build until it's rebuilt. `hooks/obs-rebuild-warning.hook` prints a
+warning at the end of any pacman transaction that upgrades one of them.
+Install it with:
+
+```bash
+sudo install -Dm644 hooks/obs-rebuild-warning.hook /etc/pacman.d/hooks/obs-rebuild-warning.hook
+```
+
+When the warning appears, launch OBS and check the browser source. If anything
+is broken, rebuild with the same version (`pkgrel` 1.2, 1.3, ...) as described
+under [Building and installing](#building-and-installing).
+
 ### Updating to a new OBS version
 
 1. Get the new official PKGBUILD:

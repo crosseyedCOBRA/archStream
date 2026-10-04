@@ -1,0 +1,18 @@
+# Warn when a library the locally built OBS links against is upgraded.
+# obs-studio is held with IgnorePkg (see README.md), so these updates can
+# leave it broken until it is rebuilt from pkgbuilds/obs-studio.
+#
+# Install: sudo install -Dm644 hooks/obs-rebuild-warning.hook /etc/pacman.d/hooks/obs-rebuild-warning.hook
+
+[Trigger]
+Operation = Upgrade
+Type = Package
+Target = ffmpeg
+Target = cef
+Target = qt6-base
+
+[Action]
+Description = Checking for OBS rebuild...
+When = PostTransaction
+NeedsTargets
+Exec = /bin/sh -c 'printf "\n==> WARNING: OBS may need a rebuild. Upgraded: %s\n    Launch OBS to check; if it fails, rebuild from ~/archStream/pkgbuilds/obs-studio\n\n" "$(tr "\n" " ")"'
