@@ -1,0 +1,166 @@
+<!doctype html>
+<!--
+  "Find me on" lower third for OBS.
+
+  OBS: add a Browser source, tick "Local file", pick this file,
+  width 700, height 160. Leave "Shutdown source when not visible" off so the
+  timer keeps running.
+
+  By default it slides in every SHOW_EVERY_MINUTES, rotates through the
+  platforms, then slides out. Add ?always to the URL (untick "Local file" and use
+  file:///path/to/socials-banner.html?always) to keep it on screen.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>crosseyedCOBRA socials banner</title>
+<link rel="stylesheet" href="../branding/brand.css">
+<style>
+  html, body { margin: 0; background: transparent; overflow: hidden; }
+
+  .banner {
+    position: absolute; left: 10px; top: 10px;
+    height: 140px;
+    display: flex; align-items: center;
+    transform: translateX(-110%);
+    transition: transform .7s cubic-bezier(.2, .9, .3, 1.15);
+  }
+  .banner.shown { transform: translateX(0); }
+
+  .logo {
+    position: relative; z-index: 2;
+    height: 140px;
+    filter: drop-shadow(3px 3px 3px rgba(0,0,0,.6));
+  }
+
+  /* same green frame / cut corner as the channel panels */
+  .plate {
+    position: relative;
+    margin-left: -34px;
+    height: 104px; width: 540px;
+    background: var(--cobra-green);
+    clip-path: polygon(0 0, 100% 0, 100% 70%, 95% 100%, 0 100%);
+  }
+  .plate .inner {
+    position: absolute; inset: 5px;
+    background:
+      repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 7px, transparent 7px 14px),
+      var(--cobra-ink);
+    clip-path: polygon(0 0, 100% 0, 100% 69%, 95% 100%, 0 100%);
+    box-shadow: inset 0 0 0 2px var(--cobra-black);
+  }
+  .plate .inner::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 5px;
+    background: var(--cobra-gold-fill);
+  }
+
+  .content {
+    position: absolute; left: 52px; right: 30px; top: 0; bottom: 5px;
+    display: flex; flex-direction: column; justify-content: center; gap: 6px;
+  }
+  .name { line-height: 1; white-space: nowrap; }
+  .name .white-text { font-size: 34px; }
+  .name .gold-text  { font-size: 36px; -webkit-text-stroke-width: 2px; }
+
+  .line {
+    position: relative; height: 34px; overflow: hidden;
+  }
+  .item {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; gap: 12px;
+    opacity: 0; transform: translateY(100%);
+    transition: transform .45s ease, opacity .45s ease;
+  }
+  .item.active { opacity: 1; transform: translateY(0); }
+  .item.leaving { opacity: 0; transform: translateY(-100%); }
+  .item .verb { font-size: 26px; }
+  .item .badge {
+    font-family: "Bungee", sans-serif; font-size: 20px; line-height: 1;
+    padding: 6px 12px 5px;
+    border: 2px solid var(--cobra-black);
+    box-shadow: 2px 2px 0 var(--cobra-black);
+    color: var(--cobra-white);
+  }
+  .badge.twitch  { background: var(--twitch); }
+  .badge.youtube { background: var(--youtube); }
+  .badge.kick    { background: var(--kick); color: var(--cobra-black); }
+</style>
+</head>
+<body>
+<div class="banner" id="banner">
+  <img class="logo" src="../branding/logo-256.png" alt="">
+  <div class="plate">
+    <div class="inner"></div>
+    <div class="content">
+      <div class="name"><span class="white-text">crosseyed</span><span class="gold-text">COBRA</span></div>
+      <div class="line" id="line"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Platforms to rotate through. All three channels are crosseyedCOBRA.
+  const ITEMS = [
+    { verb: "follow on",    platform: "TWITCH",  cls: "twitch" },
+    { verb: "subscribe on", platform: "YOUTUBE", cls: "youtube" },
+    { verb: "follow on",    platform: "KICK",    cls: "kick" },
+  ];
+  const ROTATE_SECONDS = 5;      // time on each platform
+  const ROUNDS = 2;              // times through the list per appearance
+  const SHOW_EVERY_MINUTES = 5;  // gap between appearances
+  const FIRST_SHOW_SECONDS = 10; // delay before the first appearance
+
+  const always = new URLSearchParams(location.search).has("always");
+  const banner = document.getElementById("banner");
+  const line = document.getElementById("line");
+
+  const els = ITEMS.map(it => {
+    const el = document.createElement("div");
+    el.className = "item";
+    el.innerHTML = `<span class="verb white-text"></span><span class="badge ${it.cls}"></span>`;
+    el.querySelector(".verb").textContent = it.verb;
+    el.querySelector(".badge").textContent = it.platform;
+    line.appendChild(el);
+    return el;
+  });
+
+  let current = -1;
+  function next() {
+    if (current >= 0) {
+      const old = els[current];
+      old.classList.remove("active");
+      old.classList.add("leaving");
+      setTimeout(() => old.classList.remove("leaving"), 500);
+    }
+    current = (current + 1) % els.length;
+    els[current].classList.add("active");
+  }
+
+  const sleep = s => new Promise(r => setTimeout(r, s * 1000));
+
+  async function appearance() {
+    banner.classList.add("shown");
+    for (let i = 0; i < ITEMS.length * ROUNDS; i++) {
+      next();
+      await sleep(ROTATE_SECONDS);
+    }
+    banner.classList.remove("shown");
+  }
+
+  async function run() {
+    if (always) {
+      banner.classList.add("shown");
+      next();
+      setInterval(next, ROTATE_SECONDS * 1000);
+      return;
+    }
+    await sleep(FIRST_SHOW_SECONDS);
+    for (;;) {
+      await appearance();
+      await sleep(SHOW_EVERY_MINUTES * 60);
+    }
+  }
+  document.fonts.ready.then(run);
+</script>
+</body>
+</html>

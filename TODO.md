@@ -37,8 +37,8 @@ The setup is two PCs: the **streaming PC** (this Arch box, runs OBS) and the
   this OBS. Use a remote (a web remote such as obs-web, Touch Portal or similar)
   on the gaming PC to switch scenes, see dropped frames and start/stop without
   touching the streaming PC.
-- [ ] **Socials banner**: browser source that rotates "Find me on Twitch /
-  YouTube / Kick" with channel names, shown as a lower third.
+- [ ] **Socials banner**: built in `overlays/socials-banner.html` (see
+  README). Add it to OBS as a browser source.
 - [ ] **Record both canvases**
   - 16:9: Settings → Output → Recording (Advanced mode). Use the stream
     encoder so the GTX 1080 does no extra encoding; give it its own encoder
@@ -53,9 +53,11 @@ The setup is two PCs: the **streaming PC** (this Arch box, runs OBS) and the
   - Start recording automatically with the stream (Settings → Advanced for the
     main canvas; check Aitum Vertical's settings for the same).
   - Disk space: about 2.7 GB per hour per recording at 6000 kbps.
-- [ ] **Redo Twitch and Kick panels**: same set and style on both, matching
-  the socials banner. About, Schedule, Find me on Twitch / YouTube / Kick,
-  Discord, Rules, Commands, Setup (Arch + GTX 1080), Support.
+- [ ] **Redo Twitch and Kick panels**: images are in `branding/panels/out/`
+  (About, Schedule, Subscribe, Tips, YouTube, Discord). Upload them to both
+  channels with the text and links underneath. Fill in Schedule once it's
+  decided.
+- [ ] **Pick a fixed schedule** from past stream analytics.
 - [ ] **Test stream on every platform**: go live unlisted/test and watch each
   one for a minute on a phone over mobile data.
 

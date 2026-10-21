@@ -1,0 +1,52 @@
+/* crosseyedCOBRA brand: fonts and colors taken from logo.png.
+   Used by the panels and the OBS overlays. */
+
+@font-face {
+  font-family: "Bungee";
+  src: url("fonts/Bungee-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Lilita One";
+  src: url("fonts/LilitaOne-Regular.woff2") format("woff2");
+}
+
+:root {
+  --cobra-black: #0b0b0b;
+  --cobra-ink: #161814;
+  --cobra-green: #8eae23;
+  --cobra-green-light: #abca33;
+  --cobra-green-dark: #678021;
+  --cobra-yellow: #fded31;
+  --cobra-gold: #fbbe03;
+  --cobra-orange: #d07402;
+  --cobra-red: #d7261e;
+  --cobra-white: #ffffff;
+
+  /* "COBRA" lettering: yellow fading to orange, black outline */
+  --cobra-gold-fill: linear-gradient(180deg, var(--cobra-yellow) 0%, var(--cobra-gold) 55%, var(--cobra-orange) 100%);
+
+  /* Platform accents for the socials banner */
+  --twitch: #9146ff;
+  --youtube: #ff0033;
+  --kick: #53fc18;
+}
+
+/* Gold block lettering like "COBRA" in the logo */
+.gold-text {
+  font-family: "Bungee", sans-serif;
+  background: var(--cobra-gold-fill);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--cobra-black);
+  filter: drop-shadow(2px 2px 0 var(--cobra-black));
+}
+
+/* White chunky lowercase like "crosseyed" in the logo */
+.white-text {
+  font-family: "Lilita One", sans-serif;
+  color: var(--cobra-white);
+  -webkit-text-stroke: 1px var(--cobra-black);
+  paint-order: stroke fill;
+  filter: drop-shadow(1px 1px 0 var(--cobra-black));
+}
