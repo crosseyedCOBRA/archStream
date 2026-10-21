@@ -53,6 +53,9 @@ The setup is two PCs: the **streaming PC** (this Arch box, runs OBS) and the
   - Start recording automatically with the stream (Settings → Advanced for the
     main canvas; check Aitum Vertical's settings for the same).
   - Disk space: about 2.7 GB per hour per recording at 6000 kbps.
+- [ ] **Redo Twitch and Kick panels**: same set and style on both, matching
+  the socials banner. About, Schedule, Find me on Twitch / YouTube / Kick,
+  Discord, Rules, Commands, Setup (Arch + GTX 1080), Support.
 - [ ] **Test stream on every platform**: go live unlisted/test and watch each
   one for a minute on a phone over mobile data.
 
