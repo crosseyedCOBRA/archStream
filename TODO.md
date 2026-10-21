@@ -55,9 +55,10 @@ The setup is two PCs: the **streaming PC** (this Arch box, runs OBS) and the
   - Disk space: about 2.7 GB per hour per recording at 6000 kbps.
 - [ ] **Redo Twitch and Kick panels**: images are in `branding/panels/out/`
   (About, Schedule, Subscribe, Tips, YouTube, Discord). Upload them to both
-  channels with the text and links underneath. Fill in Schedule once it's
-  decided.
-- [ ] **Pick a fixed schedule** from past stream analytics.
+  channels with the text and links underneath.
+- [x] **Pick a fixed schedule**: Mon/Wed 9-11:30 PM ET, Fri 9 PM-12:30 AM ET,
+  weekends flexible 9 PM-12:30 AM ET. It's on the Schedule panel; set the same
+  times in each platform's schedule settings too.
 - [ ] **Test stream on every platform**: go live unlisted/test and watch each
   one for a minute on a phone over mobile data.
 

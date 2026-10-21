@@ -103,8 +103,9 @@ License, see `branding/fonts/`).
 
 ### Channel panels
 
-`branding/panels/out/` has 320x100 panel images for Twitch and Kick: About,
-Schedule, Subscribe, Tips, YouTube and Discord. Put the details and links in
+`branding/panels/out/` has panel images for Twitch and Kick: About, Schedule,
+Subscribe, Tips, YouTube and Discord. They're 320x100, except Schedule, which
+is taller to fit the days and times. Put the details and links in
 each panel's text and link fields, not in the image.
 
 To change a panel, edit `PANELS` in `branding/panels/panels.html` (open it in a

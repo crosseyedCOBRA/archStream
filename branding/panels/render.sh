@@ -1,5 +1,5 @@
 #!/bin/sh
-# Render each panel in panels.html to out/<id>.png (320x100, transparent corner).
+# Render each panel in panels.html to out/<id>.png (320 wide, transparent corner).
 # Needs Chromium and ImageMagick: sudo pacman -S chromium imagemagick
 # Usage: ./render.sh            (all panels)
 #        ./render.sh about tips (only these)
@@ -9,7 +9,7 @@ cd "$(dirname "$0")"
 CHROMIUM=${CHROMIUM:-chromium}
 CHROMIUM_FLAGS=${CHROMIUM_FLAGS:-}
 # headless Chromium shrinks the viewport below the window size, so render in a
-# taller window and crop the panel out of the top.
+# taller window and trim the transparent space below the panel.
 if command -v magick >/dev/null; then IM=magick; else IM=convert; fi
 PANELS=${*:-about schedule subscribe tips youtube discord}
 
@@ -22,6 +22,6 @@ for id in $PANELS; do
     --virtual-time-budget=2000 \
     --screenshot="$PWD/out/$id.png" \
     "file://$PWD/panels.html?panel=$id" 2>/dev/null
-  $IM "out/$id.png" -crop 320x100+0+0 +repage "out/$id.png"
+  $IM "out/$id.png" -bordercolor none -border 1 -trim +repage "out/$id.png"
   echo "out/$id.png"
 done
