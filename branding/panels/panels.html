@@ -1,0 +1,125 @@
+<!doctype html>
+<!--
+  Twitch / Kick channel panels, 320 wide (100 tall, taller when a panel has rows).
+  Open in a browser to preview all of them; render.sh turns each one into a PNG
+  by loading this page with ?panel=<id>.
+  To change a panel's text, edit PANELS below and re-run render.sh.
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>crosseyedCOBRA panels</title>
+<link rel="stylesheet" href="../brand.css">
+<style>
+  html, body { margin: 0; }
+  body {
+    background: #2b2d2a;
+    display: flex; flex-direction: column; gap: 16px;
+    padding: 24px;
+  }
+  body.single { background: transparent; padding: 0; gap: 0; }
+
+  .panel {
+    position: relative;
+    width: 320px; min-height: 100px;
+    box-sizing: border-box;
+    overflow: hidden;
+    /* green frame with a cut corner, like the logo's shield edge */
+    background: var(--cobra-green);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 28px), calc(100% - 20px) 100%, 0 100%);
+  }
+  .panel .inner {
+    position: absolute; inset: 4px;
+    background:
+      radial-gradient(circle at 50px 50px, rgba(171, 202, 51, .22), transparent 170px),
+      repeating-linear-gradient(135deg, rgba(255,255,255,.025) 0 6px, transparent 6px 12px),
+      var(--cobra-ink);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 27px), calc(100% - 19px) 100%, 0 100%);
+    box-shadow: inset 0 0 0 2px var(--cobra-black);
+  }
+  /* gold accent stripe along the bottom */
+  .panel .inner::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
+    background: var(--cobra-gold-fill);
+  }
+  .panel img {
+    position: absolute; left: 6px; top: 7px;
+    height: 86px;
+    filter: drop-shadow(2px 2px 2px rgba(0,0,0,.6));
+  }
+  .panel .text {
+    position: absolute; left: 100px; right: 14px; top: 0; height: 96px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .panel .title { font-size: 30px; line-height: 1; letter-spacing: .5px; }
+  .panel .title.long { font-size: 25px; }
+  .panel .tag { font-size: 17px; line-height: 1.2; margin-top: 4px; }
+
+  /* schedule rows under the header */
+  .panel .rows {
+    position: relative;
+    margin: 100px 22px 0;
+    padding: 8px 0 20px;
+    border-top: 2px solid var(--cobra-green-dark);
+    display: grid; grid-template-columns: auto 1fr; column-gap: 14px; row-gap: 6px;
+    align-items: baseline;
+  }
+  .panel .day { font-size: 16px; line-height: 1; }
+  .panel .time { font-size: 19px; line-height: 1; }
+  .panel .note { grid-column: 2; font-size: 14px; color: var(--cobra-green-light); margin-top: -3px; }
+</style>
+</head>
+<body>
+<script>
+  const PANELS = [
+    { id: "about",     title: "ABOUT",     tag: "who's the cobra?" },
+    { id: "schedule",  title: "SCHEDULE",  tag: "all times eastern (ET)",
+      rows: [
+        { day: "MON", time: "9:00 PM - 11:30 PM" },
+        { day: "WED", time: "9:00 PM - 11:30 PM" },
+        { day: "FRI", time: "9:00 PM - 12:30 AM" },
+        { day: "SAT/SUN", time: "9:00 PM - 12:30 AM", note: "flexible, check socials" },
+      ] },
+    { id: "subscribe", title: "SUBSCRIBE", tag: "join the snake pit", long: true },
+    { id: "tips",      title: "TIPS",      tag: "feed the cobra" },
+    { id: "youtube",   title: "YOUTUBE",   tag: "vods & clips" },
+    { id: "discord",   title: "DISCORD",   tag: "hang in the pit" },
+  ];
+
+  const only = new URLSearchParams(location.search).get("panel");
+  if (only) document.body.classList.add("single");
+
+  for (const p of PANELS) {
+    if (only && p.id !== only) continue;
+    const el = document.createElement("div");
+    el.className = "panel";
+    el.id = p.id;
+    el.innerHTML = `
+      <div class="inner"></div>
+      <img src="../logo-256.png" alt="">
+      <div class="text">
+        <div class="title gold-text${p.long ? " long" : ""}"></div>
+        <div class="tag white-text"></div>
+      </div>`;
+    el.querySelector(".title").textContent = p.title;
+    el.querySelector(".tag").textContent = p.tag;
+    if (p.rows) {
+      const rows = document.createElement("div");
+      rows.className = "rows";
+      for (const r of p.rows) {
+        rows.insertAdjacentHTML("beforeend",
+          `<div class="day gold-text"></div><div class="time white-text"></div>`);
+        rows.lastElementChild.previousElementSibling.textContent = r.day;
+        rows.lastElementChild.textContent = r.time.replaceAll(" - ", " \u2013 ");
+        if (r.note) {
+          rows.insertAdjacentHTML("beforeend", `<div class="note white-text"></div>`);
+          rows.lastElementChild.textContent = r.note;
+        }
+      }
+      el.appendChild(rows);
+    }
+    document.body.appendChild(el);
+  }
+</script>
+</body>
+</html>

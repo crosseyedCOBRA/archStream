@@ -94,3 +94,34 @@ This workaround only lasts as long as OBS keeps supporting NVENC 13.0 headers
 and the `nvidia-580xx` driver keeps building on current kernels. The LTS kernel
 is the default boot entry to keep the driver stable. Once either breaks, the
 fix is a newer GPU (RTX 20 series or later; RTX 40/50 for AV1 encoding).
+
+## Branding and overlays
+
+Colors and fonts come from the crosseyedCOBRA logo (`branding/logo.png`) and
+live in `branding/brand.css`. Fonts are Bungee and Lilita One (SIL Open Font
+License, see `branding/fonts/`).
+
+### Channel panels
+
+`branding/panels/out/` has panel images for Twitch and Kick: About, Schedule,
+Subscribe, Tips, YouTube and Discord. They're 320x100, except Schedule, which
+is taller to fit the days and times. Put the details and links in
+each panel's text and link fields, not in the image.
+
+To change a panel, edit `PANELS` in `branding/panels/panels.html` (open it in a
+browser to preview all of them) and re-render:
+
+```bash
+sudo pacman -S --needed chromium imagemagick
+branding/panels/render.sh            # all panels
+branding/panels/render.sh schedule   # just one
+```
+
+### Socials banner
+
+`overlays/socials-banner.html` is a lower third that slides in every 5 minutes
+and rotates through "follow on TWITCH", "subscribe on YOUTUBE" and "follow on
+KICK". In OBS add a **Browser** source, tick **Local file**, pick the file and
+set it to 700x160. Timings and the platform list are at the top of its
+`<script>`. To keep it on screen all the time, untick **Local file** and use
+the URL `file:///home/<you>/archStream/overlays/socials-banner.html?always`.
