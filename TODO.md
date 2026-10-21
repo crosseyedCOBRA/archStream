@@ -37,6 +37,22 @@ The setup is two PCs: the **streaming PC** (this Arch box, runs OBS) and the
   this OBS. Use a remote (a web remote such as obs-web, Touch Portal or similar)
   on the gaming PC to switch scenes, see dropped frames and start/stop without
   touching the streaming PC.
+- [ ] **Socials banner**: browser source that rotates "Find me on Twitch /
+  YouTube / Kick" with channel names, shown as a lower third.
+- [ ] **Record both canvases**
+  - 16:9: Settings → Output → Recording (Advanced mode). Use the stream
+    encoder so the GTX 1080 does no extra encoding; give it its own encoder
+    only if the Stats dock stays clean.
+  - Vertical: Aitum Vertical's own recording settings (gear in its dock).
+    Reuse its stream encoder if offered; otherwise it's another NVENC encode.
+  - Hybrid MP4 (or MKV) so a crash doesn't lose the file.
+  - Separate folders, e.g. `~/Videos/Stream/horizontal` and
+    `~/Videos/Stream/vertical`.
+  - Mic, game and Discord on separate audio tracks in the 16:9 recording for
+    editing.
+  - Start recording automatically with the stream (Settings → Advanced for the
+    main canvas; check Aitum Vertical's settings for the same).
+  - Disk space: about 2.7 GB per hour per recording at 6000 kbps.
 - [ ] **Test stream on every platform**: go live unlisted/test and watch each
   one for a minute on a phone over mobile data.
 
